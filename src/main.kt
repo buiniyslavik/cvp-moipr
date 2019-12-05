@@ -1,21 +1,54 @@
-class Business(
-    val PricePerUnit: Int,
-    val VariableCosts: Int,
-    val ConstantCosts: Int,
-    val TargetProfit: Int
-
-) {
-    var NumberOfUnits = 0
-    fun getProfit(): Number {
-        return (PricePerUnit - VariableCosts) * NumberOfUnits - ConstantCosts
-    }
-    fun getTargetSales(): Number {
-        val marginProfit = PricePerUnit - VariableCosts
-        return (ConstantCosts+TargetProfit)/marginProfit
-    }
-
+interface Business {
+    val VariableCosts: Int
+    val ConstantCosts: Int
 }
 
-fun main() {
+class TargetSalesBusiness(
+    val PricePerUnit: Int,
+    val TargetProfit: Int,
+    override val VariableCosts: Int,
+    override val ConstantCosts: Int
+): Business {
+    fun getTargetSales(): Int {
+        val marginProfit = PricePerUnit - VariableCosts
+        return (ConstantCosts + TargetProfit) / marginProfit
+    }
+}
 
+class TargetPriceBusiness(
+    val MaxVolume: Int,
+    val TargetProfit: Int,
+    override val VariableCosts: Int,
+    override val ConstantCosts: Int
+): Business {
+    fun getTargetPrice(): Int {
+        TODO()
+    }
+}
+
+fun targetSalesMode() {
+    print("Введите целевую прибыль [100]:")
+    val tgp = readLine()?.toIntOrNull()?: 100
+    print("Введите постоянные расходы в месяц [10]:")
+    val cExp = readLine()?.toIntOrNull()?: 10
+    print("Введите затраты на изготовление 1 единицы продукции [5]:")
+    val vExp = readLine()?.toIntOrNull()?: 5
+    print("Введите отпускную цену единицы продукции [10]:")
+    val ppu = readLine()?.toIntOrNull()?: 10
+
+    val company = TargetSalesBusiness(ppu, tgp, vExp, cExp)
+    println("Целевой объём продаж: ${company.getTargetSales()}")
+}
+
+fun targetPriceMode() {
+    print("Введите целевую прибыль [100]:")
+    val tgp = readLine()?.toIntOrNull()?: 100
+    print("Введите постоянные расходы в месяц [10]:")
+    val cExp = readLine()?.toIntOrNull()?: 10
+    print("Введите затраты на изготовление 1 единицы продукции [5]:")
+    val vExp = readLine()?.toIntOrNull()?: 5
+    print("Введите желаемый объём выпуска [100]:")
+    val mv = readLine()?.toIntOrNull()?: 100
+    val company = TargetPriceBusiness(mv, tgp, vExp, cExp)
+    company.getTargetPrice()
 }
