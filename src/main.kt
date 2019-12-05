@@ -22,7 +22,7 @@ class TargetPriceBusiness(
     override val ConstantCosts: Int
 ): Business {
     fun getTargetPrice(): Int {
-        TODO()
+        return ((ConstantCosts + TargetProfit) / MaxVolume) + VariableCosts
     }
 }
 
@@ -47,8 +47,14 @@ fun targetPriceMode() {
     val cExp = readLine()?.toIntOrNull()?: 10
     print("Введите затраты на изготовление 1 единицы продукции [5]:")
     val vExp = readLine()?.toIntOrNull()?: 5
-    print("Введите желаемый объём выпуска [100]:")
-    val mv = readLine()?.toIntOrNull()?: 100
+    print("Введите желаемый объём выпуска [22]:")
+    val mv = readLine()?.toIntOrNull()?: 22
     val company = TargetPriceBusiness(mv, tgp, vExp, cExp)
-    company.getTargetPrice()
+    println("Минимальная отпускная цена для получения заданной прибыли: ${company.getTargetPrice()}")
+}
+
+fun main() {
+    targetSalesMode()
+    println("\n\n\n")
+    targetPriceMode()
 }
