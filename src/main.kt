@@ -5,13 +5,12 @@ interface Business {
 
 class TargetSalesBusiness(
     val PricePerUnit: Int,
-    val TargetProfit: Int,
     override val VariableCosts: Int,
     override val ConstantCosts: Int
 ) : Business {
-    fun getTargetSales(): Int {
+    fun getTargetSales(targetProfit: Int): Int {
         val marginProfit = PricePerUnit - VariableCosts
-        return (ConstantCosts + TargetProfit) / marginProfit
+        return (ConstantCosts + targetProfit) / marginProfit
     }
 }
 
@@ -36,8 +35,15 @@ fun targetSalesMode() {
     print("Введите отпускную цену единицы продукции [10]:")
     val ppu = readLine()?.toIntOrNull() ?: 10
 
-    val company = TargetSalesBusiness(ppu, tgp, vExp, cExp)
-    println("Целевой объём продаж: ${company.getTargetSales()}")
+    val company = TargetSalesBusiness(ppu, vExp, cExp)
+    val targetVolume = company.getTargetSales(tgp)
+    val minVolume = company.getTargetSales(0)
+    val safetyMargin = targetVolume - minVolume
+
+    println("Целевой объём продаж: $targetVolume шт. (${targetVolume * ppu} д.е.)")
+    println("Запас прочности: $safetyMargin шт. (${safetyMargin * ppu} д.е.)")
+    println("Точка безубыточности: $minVolume шт. (${minVolume * ppu} д.е.)")
+
 }
 
 fun targetPriceMode() {
@@ -56,5 +62,5 @@ fun targetPriceMode() {
 fun main() {
     targetSalesMode()
     println("\n\n\n")
-    targetPriceMode()
+//    targetPriceMode()
 }
