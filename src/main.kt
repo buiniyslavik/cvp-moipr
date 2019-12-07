@@ -60,7 +60,16 @@ fun targetPriceMode() {
 }
 
 fun main() {
-    targetSalesMode()
-    println("\n\n\n")
-//    targetPriceMode()
+    var selected = false
+    while (!selected) {
+        println("1. Расчёт целевого объёма выпуска, запаса прочности и точки безубыточности \n2. Расчёт целевой цены")
+        when (readLine()?.toIntOrNull()) {
+            1 -> {
+                selected = true; targetSalesMode()
+            }
+            2 -> {
+                selected = true; targetPriceMode()
+            }
+        }
+    }
 }
